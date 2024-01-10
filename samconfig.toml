@@ -17,8 +17,9 @@ capabilities = "CAPABILITY_IAM"
 confirm_changeset = true
 resolve_s3 = true
 resolve_image_repos = true
-s3_prefix = "demo"
+s3_prefix = "levio-aws-demo-form"
 region = "us-west-2"
+stack_name = "levio-aws-demo-form"
 
 [default.package.parameters]
 resolve_s3 = true

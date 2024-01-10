@@ -1,48 +1,74 @@
 package helloworld;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import helloworld.dto.PersonDto;
+import helloworld.dto.ResponseDto;
+import helloworld.service.PersonService;
+import software.amazon.lambda.powertools.utilities.EventDeserializationException;
+import software.amazon.lambda.powertools.utilities.EventDeserializer;
+import software.amazon.lambda.powertools.utilities.JsonConfig;
 
-/**
- * Handler for requests to Lambda function.
- */
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
+import static java.net.HttpURLConnection.HTTP_INTERNAL_ERROR;
+import static java.net.HttpURLConnection.HTTP_OK;
+
 public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
+    private final ObjectMapper objectMapper = JsonConfig.get().getObjectMapper();
+    private final PersonService personService;
+
+    public App() {
+        this.personService = new PersonService();
+    }
+
+    public App(PersonService personService) {
+        this.personService = personService;
+    }
+
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
+        try {
+            PersonDto person = EventDeserializer.extractDataFrom(input).as(PersonDto.class);
+            personService.save(person);
+            return createApiGatewayProxyResponseEvent(null, HTTP_OK);
+        } catch (EventDeserializationException e) {
+            return createApiGatewayProxyResponseEvent(new ResponseDto(e.getMessage()), HTTP_BAD_REQUEST);
+        } catch (Exception e) {
+            return createApiGatewayProxyResponseEvent(new ResponseDto(e.getMessage()), HTTP_INTERNAL_ERROR);
+        }
+    }
+
+    private APIGatewayProxyResponseEvent createApiGatewayProxyResponseEvent(Object body, int httpStatusCode) {
+        APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
+                .withHeaders(getHeaders())
+                .withStatusCode(httpStatusCode);
+
+        if (body == null) {
+            return response;
+        }
+        try {
+            return response
+                    .withBody(objectMapper.writeValueAsString(body));
+        } catch (JsonProcessingException e) {
+            return response
+                    .withStatusCode(HTTP_INTERNAL_ERROR)
+                    .withBody("{\"message\":\"" + e.getMessage() + "\"}");
+        }
+    }
+
+    private Map<String, String> getHeaders() {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("X-Custom-Header", "application/json");
 
-        APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
-                .withHeaders(headers);
-        try {
-            final String pageContents = this.getPageContents("https://checkip.amazonaws.com");
-            String output = String.format("{ \"message\": \"hello world\", \"location\": \"%s\" }", pageContents);
-
-            return response
-                    .withStatusCode(200)
-                    .withBody(output);
-        } catch (IOException e) {
-            return response
-                    .withBody("{}")
-                    .withStatusCode(500);
-        }
+        return headers;
     }
 
-    private String getPageContents(String address) throws IOException{
-        URL url = new URL(address);
-        try(BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()))) {
-            return br.lines().collect(Collectors.joining(System.lineSeparator()));
-        }
-    }
 }
