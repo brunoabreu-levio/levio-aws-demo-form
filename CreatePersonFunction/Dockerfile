@@ -12,4 +12,4 @@ FROM public.ecr.aws/lambda/java:17
 COPY --from=build-image /task/target/classes /var/task/
 COPY --from=build-image /task/target/dependency /var/task/lib
 # Command can be overwritten by providing a different command in the template directly.
-CMD ["helloworld.App::handleRequest"]
+CMD ["com.levio.awsdemo.createperson.App::handleRequest"]

@@ -1,4 +1,4 @@
-package helloworld.dto;
+package com.levio.awsdemo.createperson.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

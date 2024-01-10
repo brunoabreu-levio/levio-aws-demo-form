@@ -1,4 +1,4 @@
-package helloworld;
+package com.levio.awsdemo.createperson;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -6,9 +6,9 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import helloworld.dto.PersonDto;
-import helloworld.dto.ResponseDto;
-import helloworld.service.PersonService;
+import com.levio.awsdemo.createperson.dto.PersonDto;
+import com.levio.awsdemo.createperson.dto.ResponseDto;
+import com.levio.awsdemo.createperson.service.PersonService;
 import software.amazon.lambda.powertools.utilities.EventDeserializationException;
 import software.amazon.lambda.powertools.utilities.EventDeserializer;
 import software.amazon.lambda.powertools.utilities.JsonConfig;

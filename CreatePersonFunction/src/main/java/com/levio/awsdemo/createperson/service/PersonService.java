@@ -1,6 +1,6 @@
-package helloworld.service;
+package com.levio.awsdemo.createperson.service;
 
-import helloworld.dto.PersonDto;
+import com.levio.awsdemo.createperson.dto.PersonDto;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;

@@ -1,10 +1,10 @@
-package helloworld;
+package com.levio.awsdemo.createperson;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import helloworld.dto.PersonDto;
-import helloworld.service.PersonService;
+import com.levio.awsdemo.createperson.dto.PersonDto;
+import com.levio.awsdemo.createperson.service.PersonService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
