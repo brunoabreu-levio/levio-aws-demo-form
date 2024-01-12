@@ -1,6 +1,14 @@
 {
-  "firstName": "Mike",
-  "lastName": "Ross",
-  "companyName": "Suits",
-  "email": "mike.ross@suits.ca"
+  "personalInfo": {
+    "firstName": "Mike",
+    "lastName": "Ross"
+  },
+  "professionalInfo": {
+    "companyName": "Suits",
+    "contact": {
+      "email": "mike.ross@suits.ca",
+      "phone": "4181112222"
+    }
+  },
+  "isPersonalInfoConsented": true
 }
