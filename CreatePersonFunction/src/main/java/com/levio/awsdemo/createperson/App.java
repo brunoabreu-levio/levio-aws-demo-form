@@ -37,7 +37,7 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
         try {
             PersonDto person = EventDeserializer.extractDataFrom(input).as(PersonDto.class);
             personService.save(person);
-            return createApiGatewayProxyResponseEvent(null, HTTP_OK);
+            return createApiGatewayProxyResponseEvent(person, HTTP_OK);
         } catch (EventDeserializationException e) {
             return createApiGatewayProxyResponseEvent(new ResponseDto(e.getMessage()), HTTP_BAD_REQUEST);
         } catch (Exception e) {
@@ -67,6 +67,7 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("X-Custom-Header", "application/json");
+        headers.put("Access-Control-Allow-Origin", System.getenv("CORS_ORIGIN"));
 
         return headers;
     }
