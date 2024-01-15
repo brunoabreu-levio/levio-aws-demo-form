@@ -1,12 +1,11 @@
 package com.levio.awsdemo.createperson.repository;
 
-import com.levio.awsdemo.createperson.dto.PersonDto;
-import com.levio.awsdemo.createperson.dto.ProfessionalInfoDto;
 import com.levio.awsdemo.createperson.dto.ContactDto;
+import com.levio.awsdemo.createperson.dto.PersonDto;
 import com.levio.awsdemo.createperson.dto.PersonalInfoDto;
+import com.levio.awsdemo.createperson.dto.ProfessionalInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;

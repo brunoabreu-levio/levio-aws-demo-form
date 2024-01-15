@@ -27,3 +27,5 @@ replay_pid*
 .aws-sam
 */target
 */dependency-reduced-pom.xml
+*/.terraform
+*/.terraform.lock.hcl

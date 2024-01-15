@@ -33,11 +33,10 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
     private final String corsOrigin;
 
     public App() {
-        try (DynamoDbClient ddb = DynamoDbClient.builder().region(Region.US_WEST_2).build()) {
-            PersonRepository personRepository = new PersonRepository(ddb);
-            this.personService = new PersonService(personRepository);
-            this.corsOrigin = System.getenv("CORS_ORIGIN");
-        }
+        DynamoDbClient ddb = DynamoDbClient.builder().region(Region.US_WEST_2).build();
+        PersonRepository personRepository = new PersonRepository(ddb);
+        this.personService = new PersonService(personRepository);
+        this.corsOrigin = System.getenv("CORS_ORIGIN");
     }
 
     public App(PersonService personService, String corsOrigin) {
