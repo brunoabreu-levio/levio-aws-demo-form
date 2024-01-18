@@ -14,6 +14,7 @@ import software.amazon.awssdk.services.dynamodb.model.PutItemResponse;
 import software.amazon.awssdk.services.dynamodb.model.ResourceNotFoundException;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -42,6 +43,8 @@ public class PersonRepository {
 
     private HashMap<String, AttributeValue> buildItemValues(PersonDto person) {
         HashMap<String, AttributeValue> itemValues = new HashMap<>();
+
+        itemValues.put("Id", AttributeValue.builder().s(UUID.randomUUID().toString()).build());
 
         PersonalInfoDto personalInfo = person.getPersonalInfo();
         itemValues.put("FirstName", AttributeValue.builder().s(personalInfo.getFirstName()).build());
